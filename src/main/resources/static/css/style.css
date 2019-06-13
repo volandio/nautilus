@@ -1,0 +1,107 @@
+body {
+    height: 100%;
+    background-size: cover;
+    background-position: right;
+    margin: 0;
+    padding: 0;
+}
+
+.auth-wrapper {
+    width: 350px;
+    height: 360px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    box-shadow: 0px 10px 30px rgba(91, 83, 122, 0.2);
+    border-radius: 5px;
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.auth-button-login {
+    width: 160px;
+    height: 40px;
+    position: absolute;
+    bottom: 30px;
+    margin-bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #5B537A;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.alert {
+    font-size: 12px;
+    color: #CF3624;
+}
+
+.auth-app-description {
+    display: block;
+    margin-top: 35px;
+    font-weight: 500;
+    font-size: 16px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #BEBBB7;
+    letter-spacing: 0.03em;
+}
+
+.auth-app-name {
+    margin: 40px auto 44px auto;
+    display: block;
+    width: 280px;
+    line-height: 35px;
+    font-size: 32px;
+    text-align: center;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #5B537A;
+}
+
+form {
+    margin: 0 35px;
+    text-align: left;
+}
+
+input {
+    width: 280px;
+    height: 30px;
+    font-size: 16px;
+    margin: 5px 0 15px 0;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    border: none;
+    border-bottom: 1px solid #BEBBB7;
+    outline: none;
+    padding-left: 10px;
+}
+
+input[type="password"] {
+    letter-spacing: 4px;
+}
+
+button {
+    display: block;
+    width: 100px;
+    height: 32px;
+    margin: 0 auto 60px auto;
+    border-radius: 5px;
+    font-size: 13px;
+    background-color: #f8f8f8;
+    border: solid 1px #c4c4c4;
+    cursor: pointer;
+    outline: none;
+    transition: box-shadow .2s ease-in-out;
+}
+
+button:hover {
+    box-shadow: 0px 5px 10px rgba(91, 83, 122, 0.3);
+}

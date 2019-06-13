@@ -1,0 +1,37 @@
+server:
+  use-forward-headers: true
+  servlet:
+    session:
+      cookie:
+        max-age: 604800
+
+nautilus:
+  logback:
+    level: INFO
+  discovery-service:
+    security:
+      time-life-redis-session: ${server.servlet.session.cookie.max-age} # время жизни сессии в редисе в секундах
+
+spring:
+  redis:
+    url: ${REDISCLOUD_URL:redis://:TestPassword@localhost:6379}
+  datasource:
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/nautilus}
+    username: ${JDBC_DATABASE_USERNAME:postgres}
+    password: ${JDBC_DATABASE_PASSWORD:123456}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    open-in-view: true
+  thymeleaf:
+    cache: false
+    prefix: classpath:/static/
+  jackson:
+    time-zone: Europe/Moscow
+
