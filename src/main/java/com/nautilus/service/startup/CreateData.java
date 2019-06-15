@@ -1,5 +1,6 @@
 package com.nautilus.service.startup;
 
+import com.nautilus.model.StaticGroups;
 import com.nautilus.model.entity.Group;
 import com.nautilus.model.entity.User;
 import com.nautilus.repository.relation_db.GroupRepository;
@@ -15,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Slf4j
 public class CreateData implements ApplicationListener<ApplicationStartedEvent> {
-
-    private static final String ADMIN_GROUP = "ADMIN";
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
@@ -34,13 +33,13 @@ public class CreateData implements ApplicationListener<ApplicationStartedEvent> 
     @Transactional
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        if (groupRepository.findByGroupNameCaseInsensitive(ADMIN_GROUP) == null) {
+        if (groupRepository.findByGroupNameCaseInsensitive(StaticGroups.ADMIN_GROUP.getName()) == null) {
             Group adminGroup = new Group();
-            adminGroup.setName(ADMIN_GROUP);
+            adminGroup.setName(StaticGroups.ADMIN_GROUP.getName());
             groupRepository.save(adminGroup);
 
             Group userGroup = new Group();
-            userGroup.setName("USER");
+            userGroup.setName(StaticGroups.USER_GROUP.getName());
             groupRepository.save(userGroup);
 
             User adminUser = new User();
