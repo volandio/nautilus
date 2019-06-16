@@ -61,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).and()
                 .authorizeRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .antMatchers("/admin.html").hasAuthority("ADMIN")
                 .antMatchers("/login*", "/api/translate/get/**").permitAll()
                 .anyRequest().authenticated().and()
                 .formLogin()

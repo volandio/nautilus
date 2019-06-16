@@ -1,37 +1,36 @@
 package com.nautilus.service;
 
-import com.nautilus.model.entity.Group;
+import com.nautilus.exception.ErrorCode;
+import com.nautilus.exception.GenericRuntimeException;
 import com.nautilus.model.entity.User;
 import com.nautilus.repository.relation_db.UserRepository;
 import com.nautilus.util.LoginHelper;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
+@Transactional
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-
     private final LoginHelper loginHelper;
-
-    @Autowired
-    public UserService(UserRepository userRepository,
-                       LoginHelper loginHelper) {
-        this.userRepository = userRepository;
-        this.loginHelper = loginHelper;
-    }
+    private final I18nService i18n;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(readOnly = true)
@@ -43,11 +42,33 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        for (Group group : userFromDatabase.getGroups()) {
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(group.getName());
-            grantedAuthorities.add(grantedAuthority);
-        }
+        grantedAuthorities.add(new SimpleGrantedAuthority(userFromDatabase.getGroup().getName()));
         return new org.springframework.security.core.userdetails.User(userFromDatabase.getLogin(),
                 userFromDatabase.getHashPassword(), grantedAuthorities);
+    }
+
+    public User save(User user) {
+        User tempUser = userRepository.findByLoginCaseInsensitive(user.getLogin());
+        if (tempUser != null) {
+            throw new GenericRuntimeException(i18n.getMessage("error.user.login_is_busy"), ErrorCode.UNKNOWN);
+        }
+        user.setHashPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    public void delete(Integer id) {
+        Optional<User> user = userRepository.findById(id);
+        if (!user.isPresent()) {
+            throw new GenericRuntimeException(i18n.getMessage("error.user.login_id_not_exist"), ErrorCode.NOT_FOUND);
+        }
+        if (user.get().getLogin().equals("admin")) {
+            throw new GenericRuntimeException(i18n.getMessage("error.user.login_admin"), ErrorCode.UNKNOWN);
+        }
+        userRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> getAll() {
+        return userRepository.findAll();
     }
 }

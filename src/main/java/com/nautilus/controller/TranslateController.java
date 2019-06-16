@@ -20,7 +20,7 @@ import java.util.Set;
 @RequestMapping("/api/translate")
 @RequiredArgsConstructor
 @Slf4j
-public class TranslateController {
+public class TranslateController extends AbstractController{
 
     private final TranslateService translateService;
 

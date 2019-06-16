@@ -45,13 +45,13 @@ public class CreateData implements ApplicationListener<ApplicationStartedEvent> 
             User adminUser = new User();
             adminUser.setLogin("admin");
             adminUser.setHashPassword(bCryptPasswordEncoder.encode("admin"));
-            adminUser.getGroups().add(adminGroup);
+            adminUser.setGroup(adminGroup);
             userRepository.save(adminUser);
 
             User userUser = new User();
             userUser.setLogin("user");
             userUser.setHashPassword(bCryptPasswordEncoder.encode("user"));
-            userUser.getGroups().add(userGroup);
+            userUser.setGroup(userGroup);
             userRepository.save(userUser);
         }
     }
