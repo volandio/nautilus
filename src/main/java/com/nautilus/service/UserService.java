@@ -6,8 +6,8 @@ import com.nautilus.model.entity.User;
 import com.nautilus.repository.relation_db.UserRepository;
 import com.nautilus.util.LoginHelper;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,13 +24,16 @@ import java.util.Optional;
 @Service
 @Slf4j
 @Transactional
-@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
-    private final LoginHelper loginHelper;
-    private final I18nService i18n;
-    private final BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private LoginHelper loginHelper;
+    @Autowired
+    private I18nService i18n;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(readOnly = true)
